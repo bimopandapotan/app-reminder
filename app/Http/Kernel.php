@@ -56,5 +56,6 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'check.session' => \App\Http\Middleware\CheckSession::class,
+        'cron.auth' => \App\Http\Middleware\ApiCronAuth::class,
     ];
 }

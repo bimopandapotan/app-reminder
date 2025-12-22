@@ -57,14 +57,22 @@ class KaryawanController extends Controller
             'alamat' => 'required',
             'status_karyawan' => 'required',
             'status_cuti' => 'nullable|boolean',
-            'foto_karyawan' => 'nullable|image|mimes:jpeg,png,jpg,gif',
-            'foto_ktp' => 'nullable|image|mimes:jpeg,png,jpg,gif',
+            'foto_karyawan' => 'nullable|image|mimes:jpeg,png,jpg,gif,jfif',
+            'foto_ktp' => 'nullable|image|mimes:jpeg,png,jpg,gif,jfif',
             'size_baju' => 'required|in:xs,s,m,l,xl,xxl,xxxl',
             'bpjs_ketenagakerjaan' => 'required|in:Ada,Tidak Ada',
             'bpjs_kesehatan' => 'required|in:Ada,Tidak Ada',
         ]);
 
         $data = $request->only('nama', 'nik', 'jenis_kelamin', 'tgl_masuk','tgl_lahir','tempat_lahir','no_hp','agama','divisi','jabatan','alamat','status_karyawan','status_cuti','size_baju','bpjs_kesehatan','bpjs_ketenagakerjaan');
+
+        if (!Storage::exists('public/karyawan')) {
+            Storage::makeDirectory('public/karyawan');
+        }
+
+        if (!Storage::exists('public/ktp')) {
+            Storage::makeDirectory('public/ktp');
+        }
 
         if ($request->hasFile('foto_karyawan')) {
             $file = $request->file('foto_karyawan');

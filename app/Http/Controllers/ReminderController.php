@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Reminder;
+use App\Models\Bts;
+use App\Models\Domain;
 use Carbon\Carbon;
+use App\Models\Motor;
+use App\Models\Reminder;
+use Illuminate\Http\Request;
 
 class ReminderController extends Controller
 {
@@ -74,5 +77,33 @@ class ReminderController extends Controller
         $reminder->delete();
 
         return redirect()->route('reminders.index')->with('success', 'Reminder berhasil dihapus');
+    }
+
+    public function getReminderTask()
+    {
+        $motors_expiring = Motor::with('karyawan')->whereDate('tanggal_pajak', '<=', Carbon::now()->addDays(30))->get();
+        $expired_status = [];
+        if($motors_expiring->isNotEmpty()){
+            foreach($motors_expiring as $motor){
+                $days_left = round(Carbon::now('Asia/Jakarta')->startOfDay()->diffInDays($motor->tanggal_pajak, false));
+
+                if($days_left > 0){
+                    $expired_status[$motor->id] = 'soon';
+                } elseif($days_left == 0){
+                    $expired_status[$motor->id] = 'today';
+                } else {
+                   $expired_status[$motor->id] = 'passed';
+                }
+            }
+        }
+
+        $bts = Bts::all();
+        $domain = Domain::all();
+
+        return response()->json([
+            'motor' => $motor,
+            'bts' => $bts,
+            'domain' => $domain,
+        ]);
     }
 }

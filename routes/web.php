@@ -1,4 +1,6 @@
 <?php
+use App\Exports\KaryawanExport;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BtsController;
 use App\Http\Controllers\AuthController;
@@ -13,7 +15,6 @@ use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\TransaksiBtsController;
 use App\Http\Controllers\JenisPembayaranController;
 use App\Http\Controllers\TransaksiDomainController;
-use App\Exports\KaryawanExport;
 
 Route::get('auth', [AuthController::class, 'index'])->name('auth');
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
