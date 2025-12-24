@@ -13,6 +13,7 @@ class CreateDomainTable extends Migration
             $table->string('nama_domain')->unique();
             $table->string('nama_perusahaan');
             $table->date('tgl_expired');
+            $table->string('telepon');
             $table->decimal('nominal', 10, 2);
             $table->enum('status_berlangganan', ['Aktif', 'Tidak Aktif']);
             $table->timestamps();

@@ -213,6 +213,20 @@
           <span class="nav-link-text ms-1">Pajak</span>
         </a>
       </li>
+
+      <li class="nav-item mt-3">
+        <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Master Nomor</h6>
+      </li>
+
+      <li class="nav-item pb-1">
+        <a class="nav-link {{ (Request::is('telepon') ? 'active' : '') }}" href="{{ route('telepon.index') }}">
+          <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i style="font-size: 1em;" class="fas fa-bell {{ (Request::is('telepon') ? 'text-white' : 'text-dark') }}" aria-hidden="true"></i>
+          </div>
+          <span class="nav-link-text ms-1">Telepon</span>
+        </a>
+      </li>
+
     </ul>
   </div>
 </aside>

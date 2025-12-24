@@ -74,6 +74,7 @@
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">No</th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Jenis Pembayaran</th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Jatuh Tempo</th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Kontak</th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
                                 </tr>
@@ -89,6 +90,9 @@
                                     </td>
                                     <td class="text-center">
                                         <p class="text-xs font-weight-bold mb-0"><strong>{{ $pembayaran->tanggal_jatuh_tempo->format('d M, Y') }}</strong></p>
+                                    </td>
+                                    <td class="text-center">
+                                        <p class="text-xs font-weight-bold mb-0"><strong>{{ $pembayaran->telepon->nama }}</strong></p>
                                     </td>
                                     <td class="text-center">
                                         @if ($pembayaran->status == 'aktif')
@@ -146,6 +150,14 @@
                         <label for="tanggal_jatuh_tempo" class="form-label">Tanggal Jatuh Tempo</label>
                         <input type="date" class="form-control" id="tanggal_jatuh_tempo" name="tanggal_jatuh_tempo" required>
                     </div>
+                    <div class="mb-3">
+                        <label for="telepon_id" class="form-label">Telepon</label>
+                        <select id="telepon_id" name="telepon_id" class="form-control" required>
+                            @foreach ($telps as $telp)
+                                <option value="{{ $telp->id }}">{{ $telp->nama }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                     <button type="submit" class="btn bg-gradient-info">Simpan</button>
                 </form>
             </div>
@@ -180,7 +192,15 @@
                     </div>
                     <div class="mb-3">
                         <label for="tanggal_jatuh_tempo_{{ $pembayaran->id }}" class="form-label">Tanggal Jatuh Tempo</label>
-                        <input type="date" class="form-control" id="tanggal_jatuh_tempo_{{ $pembayaran->id }}" name="tanggal_jatuh_tempo" value="{{ $pembayaran->tanggal_jatuh_tempo }}" required>
+                        <input type="date" class="form-control" id="tanggal_jatuh_tempo_{{ $pembayaran->id }}" name="tanggal_jatuh_tempo" value="{{ $pembayaran->tanggal_jatuh_tempo->format('Y-m-d') }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="telepon_id_{{ $pembayaran->id }}" class="form-label">Telepon</label>
+                        <select id="telepon_id_{{ $pembayaran->id }}" name="telepon_id" class="form-control" required>
+                            @foreach ($telps as $telp)
+                                <option value="{{ $telp->id }}" {{ $pembayaran->telepon_id == $telp->id ? 'selected' : '' }}>{{ $telp->nama }}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <button type="submit" class="btn bg-gradient-info">Update</button>
                 </form>

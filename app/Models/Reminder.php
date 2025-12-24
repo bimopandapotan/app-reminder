@@ -17,5 +17,11 @@ class Reminder extends Model
         'tanggal_reminder',
         'status',
         'status_pelaksanaan',
+        'telepon_id',
     ];
+
+    public function telepon()
+    {
+        return $this->belongsTo(Telepon::class, 'telepon_id');
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\Telepon;
 use App\Models\Pembayaran;
 use Illuminate\Http\Request;
 use App\Models\JenisPembayaran;
@@ -15,6 +16,7 @@ class JenisPembayaranController extends Controller
         $search = $request->input('search');
 
         $query = JenisPembayaran::query();
+        $telps = Telepon::query()->get();
 
         if ($tanggalFilter) {
             $query->whereYear('tanggal_jatuh_tempo', $tanggalFilter);
@@ -31,7 +33,7 @@ class JenisPembayaranController extends Controller
 
         $pembayarans_expired = JenisPembayaran::where('tanggal_jatuh_tempo', '<=', Carbon::now()->addDays(7))->orderBy('tanggal_jatuh_tempo')->get();
 
-        return view('pembayaran_bulanan.tb_jenispembayaran', compact('pembayarans', 'pembayarans_expired', 'tanggalFilter'));
+        return view('pembayaran_bulanan.tb_jenispembayaran', compact('pembayarans', 'pembayarans_expired', 'tanggalFilter', 'telps'));
 }
 
 
@@ -40,6 +42,7 @@ class JenisPembayaranController extends Controller
         $request->validate([
             'jenis_pembayaran' => 'required|string|max:255',
             'status' => 'required|in:aktif,tidak-aktif',
+            'telepon_id' => 'required|exists:telepons,id',
         ]);
 
         JenisPembayaran::create($request->all());
@@ -52,6 +55,7 @@ class JenisPembayaranController extends Controller
         $request->validate([
             'jenis_pembayaran' => 'required|string|max:255',
             'status' => 'required|in:aktif,tidak-aktif',
+            'telepon_id' => 'required|exists:telepons,id',
         ]);
 
         $pembayaran = JenisPembayaran::find($id);

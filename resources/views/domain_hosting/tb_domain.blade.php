@@ -80,6 +80,7 @@
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nama Perusahaan</th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nominal</th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tanggal Expired</th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">No Telepon</th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status Berlangganan</th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
                                 </tr>
@@ -101,6 +102,9 @@
                                     </td>
                                     <td class="text-center">
                                         <p class="text-xs font-weight-bold mb-0">{{ $domain->tgl_expired->format('d M, Y') }}</p>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="text-secondary text-xs font-weight-bold"> {{$domain->telepon}} </span>
                                     </td>
                                     <td class="text-center">
                                         @if ($domain->status_berlangganan == 'Aktif')
@@ -145,6 +149,10 @@
                         <input type="date" class="form-control" id="tgl_expired" name="tgl_expired" required>
                     </div>
                     <div class="mb-3">
+                        <label for="telepon" class="form-label">Nomor Telepon</label>
+                        <input type="text" class="form-control" id="telepon" name="telepon" required>
+                    </div>
+                    <div class="mb-3">
                         <label for="nama_perusahaan" class="form-label">Nama Perusahaan</label>
                         <input type="text" class="form-control" id="nama_perusahaan" placeholder="Nama Perusahaan" name="nama_perusahaan" required>
                     </div>
@@ -186,6 +194,10 @@
                     <div class="mb-3">
                         <label for="tgl_expired_{{ $domain->id }}" class="form-label">Tanggal Expired</label>
                         <input type="date" class="form-control" id="tgl_expired_{{ $domain->id }}" name="tgl_expired" value="{{ $domain->tgl_expired->format('Y-m-d') }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="telepon_{{ $domain->id }}" class="form-label">Nomor Telepon</label>
+                        <input type="text" class="form-control" id="telepon_{{ $domain->id }}" name="telepon" value="{{ $domain->telepon }}" required>
                     </div>
                     <div class="mb-3">
                         <label for="nama_perusahaan_{{ $domain->id }}" class="form-label">Nama Perusahaan</label>

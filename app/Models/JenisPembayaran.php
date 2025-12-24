@@ -21,11 +21,17 @@ class JenisPembayaran extends Model
         'jenis_pembayaran',
         'status',
         'tanggal_jatuh_tempo',
+        'telepon_id',
     ];
 
     public function pembayaran()
     {
         return $this->hasMany(Pembayaran::class, 'id_jenis_pembayaran');
+    }
+
+    public function telepon()
+    {
+        return $this->belongsTo(Telepon::class, 'telepon_id');
     }
 
 }

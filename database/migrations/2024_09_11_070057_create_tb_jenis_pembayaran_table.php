@@ -15,8 +15,11 @@ return new class extends Migration
         $table->id();
         $table->string('jenis_pembayaran');
         $table->enum('status', ['aktif', 'tidak-aktif']);
-        $table->date('tanggal_jatuh_tempo'); 
+        $table->date('tanggal_jatuh_tempo');
+        $table->unsignedBigInteger('telepon_id');
         $table->timestamps();
+
+        $table->foreign('telepon_id')->references('id')->on('telepons')->onDelete('cascade');
     });
 }
 

@@ -20,7 +20,10 @@ return new class extends Migration
             $table->date('tanggal_reminder');
             $table->enum('status', ['aktif', 'tidak-aktif']);
             $table->enum('status_pelaksanaan', ['sudah', 'belum']);
+            $table->unsignedBigInteger('telepon_id');
             $table->timestamps();
+
+            $table->foreign('telepon_id')->references('id')->on('telepons')->onDelete('cascade');
         });
     }
 

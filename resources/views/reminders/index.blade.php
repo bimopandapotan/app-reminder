@@ -49,6 +49,7 @@
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tentang Reminder</th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tanggal</th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Kontak</th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status Pelaksanaan</th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
                                 </tr>
@@ -71,6 +72,9 @@
                                     </td>
                                     <td class="text-center">
                                         <p class="text-xs font-weight-bold mb-0">{{ \Carbon\Carbon::parse($reminder->tanggal_reminder)->format('d M, Y')}}</p>
+                                    </td>
+                                    <td class="text-center">
+                                        <p class="text-xs font-weight-bold mb-0">{{ $reminder->telepon->nama }}</p>
                                     </td>
                                     <td class="text-center">
                                         @if($reminder->status_pelaksanaan == 'sudah')
@@ -121,6 +125,7 @@
                         'Keterangan' => $reminder->keterangan ?? 'Tidak ada keterangan',
                         'Tanggal Reminder' => \Carbon\Carbon::parse($reminder->tanggal_reminder)->format('d M, Y'),
                         'Status' => ucfirst($reminder->status),
+                        'Kontak' => $reminder->telepon->nama ?? 'Tidak ada kontak',
                         'Status Pelaksanaan' => ucfirst($reminder->status_pelaksanaan)
                     ];
                 @endphp
@@ -160,6 +165,14 @@
                         <label for="tanggal_reminder" class="form-label">Tanggal Reminder</label>
                         <input type="date" class="form-control" id="tanggal_reminder" name="tanggal_reminder" required>
                     </div>
+                    <div class="mb-3">
+                        <label for="telepon_id" class="form-label">Kontak</label>
+                        <select class="form-control" id="telepon_id" name="telepon_id" required>
+                            @foreach ($telps as $telepon)
+                                <option value="{{ $telepon->id }}">{{ $telepon->nama }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                     <input type="hidden" name="status" value="aktif">
                     <input type="hidden" name="status_pelaksanaan" value="belum">
                     <button type="submit" class="btn bg-gradient-info">Simpan</button>
@@ -198,6 +211,14 @@
                         <select class="form-control" id="status_{{ $reminder->id }}" name="status" required>
                             <option value="aktif" {{ $reminder->status == 'aktif' ? 'selected' : '' }}>Aktif</option>
                             <option value="tidak-aktif" {{ $reminder->status == 'tidak-aktif' ? 'selected' : '' }}>Tidak Aktif</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="telepon_id_{{ $reminder->id }}" class="form-label">Kontak</label>
+                        <select class="form-control" id="telepon_id_{{ $reminder->id }}" name="telepon_id" required>
+                            @foreach ($telps as $telepon)
+                                <option value="{{ $telepon->id }}" {{ $reminder->telepon_id == $telepon->id ? 'selected' : '' }}>{{ $telepon->nama }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="mb-3">

@@ -22,6 +22,7 @@ class Domain extends Model
     protected $fillable = [
         'nama_domain',
         'tgl_expired',
+        'telepon',
         'nama_perusahaan',
         'nominal',
         'status_berlangganan'

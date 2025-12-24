@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Bts;
-use App\Models\Domain;
 use Carbon\Carbon;
+use App\Models\Bts;
 use App\Models\Motor;
+use App\Models\Domain;
+use App\Models\Telepon;
 use App\Models\Reminder;
 use Illuminate\Http\Request;
 
@@ -14,6 +15,7 @@ class ReminderController extends Controller
     public function index(Request $request)
 {
     $query = Reminder::query();
+    $telps = Telepon::query()->get();
 
     if ($request->has('search')) {
         $search = $request->input('search');
@@ -30,7 +32,7 @@ class ReminderController extends Controller
 
     $todayReminders = Reminder::where('status', 'aktif')->where('tanggal_reminder', '<=', Carbon::today()->format('Y-m-d'))->get();
 
-    return view('reminders.index', compact('reminders','todayReminders'));
+    return view('reminders.index', compact('reminders','todayReminders','telps'));
 }
 
 
@@ -81,29 +83,51 @@ class ReminderController extends Controller
 
     public function getReminderTask()
     {
-        $motors_expiring = Motor::with('karyawan')->whereDate('tanggal_pajak', '<=', Carbon::now()->addDays(30))->get();
-        $expired_status = [];
-        if($motors_expiring->isNotEmpty()){
-            foreach($motors_expiring as $motor){
-                $days_left = round(Carbon::now('Asia/Jakarta')->startOfDay()->diffInDays($motor->tanggal_pajak, false));
+        $now = Carbon::now('Asia/Jakarta')->startOfDay();
 
-                if($days_left > 0){
-                    $expired_status[$motor->id] = 'soon';
-                } elseif($days_left == 0){
-                    $expired_status[$motor->id] = 'today';
-                } else {
-                   $expired_status[$motor->id] = 'passed';
-                }
-            }
-        }
+        $motors = Motor::with('karyawan')
+            ->whereDate('tanggal_pajak', '<=', now()->addDays(30))
+            ->get()
+            ->map(function ($motor) use ($now) {
+                $days_left = $now->diffInDays($motor->tanggal_pajak, false);
 
-        $bts = Bts::all();
-        $domain = Domain::all();
+                $motor->expired_status = $days_left > 0
+                    ? 'soon'
+                    : ($days_left === 0 ? 'today' : 'passed');
+
+                return $motor;
+            });
+
+        $bts = Bts::whereDate('jatuh_tempo', '<=', now()->addDays(30))
+            ->where('status', '!=', 'Tidak Aktif')
+            ->get()
+            ->map(function ($bts) use ($now) {
+                $days_left = $now->diffInDays($bts->jatuh_tempo, false);
+
+                $bts->expired_status = $days_left > 0
+                    ? 'soon'
+                    : ($days_left === 0 ? 'today' : 'passed');
+
+                return $bts;
+            });
+
+        $domains = Domain::whereDate('tgl_expired', '<=', now()->addDays(30))
+            ->where('status_berlangganan', '!=', 'Tidak Aktif')
+            ->get()
+            ->map(function ($domain) use ($now) {
+                $days_left = $now->diffInDays($domain->tgl_expired, false);
+
+                $domain->expired_status = $days_left > 0
+                    ? 'soon'
+                    : ($days_left === 0 ? 'today' : 'passed');
+
+                return $domain;
+            });
 
         return response()->json([
-            'motor' => $motor,
-            'bts' => $bts,
-            'domain' => $domain,
+            'motor'  => $motors,
+            'bts'    => $bts,
+            'domain' => $domains,
         ]);
     }
 }

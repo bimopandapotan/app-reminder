@@ -34,10 +34,11 @@ class DomainController extends Controller
 
 
     public function store(Request $request)
-    {
+    {   
         $request->validate([
             'nama_domain' => 'required|unique:domain,nama_domain',
             'tgl_expired' => 'required|date',
+            'telepon' => 'required|string|max:15',
             'nama_perusahaan' => 'required',
             'nominal' => 'required|numeric', 
             'status_berlangganan' => 'required|in:Aktif,Tidak Aktif',  
@@ -52,6 +53,7 @@ class DomainController extends Controller
         $request->validate([
             'nama_domain' => 'required|unique:domain,nama_domain,' . $id,
             'tgl_expired' => 'required|date',
+            'telepon' => 'required|string|max:15',
             'nama_perusahaan' => 'required',
             'nominal' => 'required|numeric',
             'status_berlangganan' => 'required|in:Aktif,Tidak Aktif',  
