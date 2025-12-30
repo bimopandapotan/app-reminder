@@ -227,6 +227,19 @@
         </a>
       </li>
 
+      <li class="nav-item mt-3">
+        <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">WA Login</h6>
+      </li>
+
+      <li class="nav-item pb-1">
+        <a class="nav-link {{ (Request::is('wa-login') ? 'active' : '') }}" href="{{ route('wa-login.index') }}">
+          <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i style="font-size: 1em;" class="fas fa-bell {{ (Request::is('wa-login') ? 'text-white' : 'text-dark') }}" aria-hidden="true"></i>
+          </div>
+          <span class="nav-link-text ms-1">Login WA Reminder</span>
+        </a>
+      </li>
+
     </ul>
   </div>
 </aside>

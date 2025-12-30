@@ -97,6 +97,12 @@
         font-size: 0.75rem !important;
         color: #999;
     }
+
+    .dataTables_filter {
+        margin-top: 1.5rem;
+        margin-right: 24px;
+    }
+
 </style>
 
 
@@ -167,7 +173,7 @@
             "paging": true,
             "ordering": true, 
             "info": true,          
-            "searching": false,    
+            "searching": true,    
             "language": {
                 "paginate": {
                     "previous": "‹",

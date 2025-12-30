@@ -3,6 +3,9 @@
 @section('content')
 
 @foreach ($todayReminders as $pengingat)
+    @if ($pengingat->status_pelaksanaan == 'sudah')
+        @continue
+    @endif
     <div class="alert alert-info alert-dismissible fade show mx-4" role="alert">
         <span class="text-white">
             <strong>Reminder!</strong> 
@@ -42,7 +45,7 @@
 
                 <div class="card-body px-0 pt-0 pb-2">
                     <div class="table-responsive p-0">
-                        <table class="table align-items-center mb-0">
+                        <table id="dataTable" class="table align-items-center mb-0">
                             <thead>
                                 <tr>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">No</th>

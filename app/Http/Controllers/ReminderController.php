@@ -9,6 +9,7 @@ use App\Models\Domain;
 use App\Models\Telepon;
 use App\Models\Reminder;
 use Illuminate\Http\Request;
+use App\Models\JenisPembayaran;
 
 class ReminderController extends Controller
 {
@@ -124,10 +125,41 @@ class ReminderController extends Controller
                 return $domain;
             });
 
+        $jenispembayarans = JenisPembayaran::with('telepon')
+            ->whereDate('tanggal_jatuh_tempo', '<=', now()->addDays(30))
+            ->where('status', '!=', 'tidak-aktif')
+            ->get()
+            ->map(function ($jenispembayaran) use ($now) {
+                $days_left = $now->diffInDays($jenispembayaran->tanggal_jatuh_tempo, false);
+
+                $jenispembayaran->expired_status = $days_left > 0
+                    ? 'soon'
+                    : ($days_left === 0 ? 'today' : 'passed');
+
+                return $jenispembayaran;
+            });
+
+        $reminders = Reminder::with('telepon')
+            ->where('status', 'aktif')
+            ->where('status_pelaksanaan', 'belum')
+            ->whereDate('tanggal_reminder', '<=', now()->addDays(30))
+            ->get()
+            ->map(function ($reminder) use ($now) {
+                $days_left = $now->diffInDays($reminder->tanggal_reminder, false);
+
+                $reminder->expired_status = $days_left > 0
+                    ? 'soon'
+                    : ($days_left === 0 ? 'today' : 'passed');
+
+                return $reminder;
+            });
+
         return response()->json([
             'motor'  => $motors,
             'bts'    => $bts,
             'domain' => $domains,
+            'jenispembayaran' => $jenispembayarans,
+            'reminder' => $reminders,
         ]);
     }
 }

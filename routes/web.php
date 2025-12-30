@@ -8,6 +8,7 @@ use App\Http\Controllers\MotorController;
 use App\Http\Controllers\PajakController;
 use App\Http\Controllers\DomainController;
 use App\Http\Controllers\TeleponController;
+use App\Http\Controllers\WaLoginController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\ReminderController;
 use App\Http\Controllers\DashboardController;
@@ -39,6 +40,7 @@ Route::get('logout', [AuthController::class, 'logout'])->name('logout');
     Route::resource('pajak', PajakController::class);
     Route::resource('reminders', ReminderController::class);
     Route::resource('telepon', TeleponController::class);
+    Route::resource('wa-login', WaLoginController::class);
     Route::put('/reminders/{id}', [ReminderController::class, 'update'])->name('reminders.update');
 
     Route::get('/download-excel', [PajakController::class, 'export_excel']);
