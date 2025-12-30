@@ -30,4 +30,8 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'whatsapp' => [
+        'node_endpoint' => env('NODE_ENDPOINT', 'http://localhost:3000'),
+    ],
+
 ];

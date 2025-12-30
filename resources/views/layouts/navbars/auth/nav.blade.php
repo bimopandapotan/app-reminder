@@ -55,7 +55,7 @@
     const navStatus = document.getElementById('nav-wa-status');
     
     // Sesuaikan alamat IP & Port dengan server Node.js Sir
-    const navSocket = io("http://localhost:88");
+    const navSocket = io("{{ config('services.whatsapp.node_endpoint') }}");
 
     navSocket.on('connect', () => {
         // Saat socket terhubung, status default adalah mengecek WA login
